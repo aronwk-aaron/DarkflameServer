@@ -1380,15 +1380,16 @@ void Entity::NotifyObject(Entity* sender, const std::string& name, int32_t param
 }
 
 void Entity::OnEmoteReceived(const int32_t emote, Entity* originator) {
-
-	for (auto* script : CppScripts::GetEntityScripts(this))
-	{
+	std::vector<CppScripts::Script*> scripts = CppScripts::GetEntityScripts(this);
+	if (!scripts.empty()) {
+		for (auto* script : scripts){
 		script->OnEmoteReceived(this, emote, originator);
 	}
-
+	} else {
 	for (const auto& pair : m_Components) {
 		if (pair.second == nullptr) continue;
 		pair.second->OnEmoteReceived(originator, emote, this);
+		}
 	}
 }
 
