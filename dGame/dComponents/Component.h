@@ -43,6 +43,14 @@ public:
      */
     virtual void LoadFromXml(tinyxml2::XMLDocument* doc);
 
+	/**
+	 * Handle Emotes being reveiced by entities
+	 * @param originator Entity that is triggerting this
+	 * @param emote the ID of th emote being use
+	 * @param target Entity that is being targeted
+	 */
+	virtual void OnEmoteReceived(Entity* originator, const int32_t emote, Entity* target);
+
 protected:
 
     /**

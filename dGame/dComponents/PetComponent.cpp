@@ -336,6 +336,14 @@ void PetComponent::OnUse(Entity* originator)
     }
 }
 
+void PetComponent::OnEmoteReceived(Entity* originator, const int32_t emote, Entity* target) {
+	if (emote == 115) {
+		m_Parent->AddCallbackTimer(1.5f, [this, originator]() {
+			OnUse(originator);
+		});
+	}
+}
+
 void PetComponent::Update(float deltaTime) 
 {
     if (m_StartPosition == NiPoint3::ZERO)

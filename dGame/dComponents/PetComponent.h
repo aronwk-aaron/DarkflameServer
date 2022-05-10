@@ -34,6 +34,14 @@ public:
      */
     void OnUse(Entity* originator) override;
 
+	/**
+	 * Handle Emotes being reveiced by pets
+	 * @param originator Entity that is triggerting this
+	 * @param emote the ID of th emote being use
+	 * @param target Entity that is being targeted
+	 */
+	void OnEmoteReceived(Entity* originator, const int32_t emote, Entity* target) override;
+
     /**
      * Attempts to complete the pet minigame by passing a list of bricks to build the minigame model.
      * @param bricks the bricks to try to complete the minigame with

@@ -173,8 +173,14 @@ public:
                            float_t pathTime, float_t totalTime, int32_t waypoint);
 
 	void NotifyObject(Entity* sender, const std::string& name, int32_t param1 = 0, int32_t param2 = 0);
-	void OnEmoteReceived(int32_t emote, Entity* target);
-    
+
+	/**
+	 * Handle Emotes being reveiced by pets
+	 * @param emote the ID of th emote being use
+	 * @param originator Entity that is triggerting this
+	 */
+	void OnEmoteReceived(int32_t emote, Entity* originator);
+
     void OnUse(Entity* originator);
 
 	void OnHitOrHealResult(Entity* attacker, int32_t damage);

@@ -34,3 +34,7 @@ void Component::UpdateXml(tinyxml2::XMLDocument* doc)
 void Component::LoadFromXml(tinyxml2::XMLDocument *doc) {
 
 }
+
+void Component::OnEmoteReceived(Entity* originator, const int32_t emote, Entity* target) {
+
+}
