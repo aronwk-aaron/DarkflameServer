@@ -128,35 +128,20 @@ void PetComponent::Serialize(RakNet::BitStream* outBitStream, bool bIsInitialUpd
     }
 }
 
-void PetComponent::OnUse(Entity* originator) 
-{
-    if (m_Owner != LWOOBJID_EMPTY)
-    {
-        return;
-    }
+void PetComponent::OnUse(Entity* originator) {
+	Game::logger->Log("PetComponent::OnUse", "Called with originator (%llu)\n", originator->GetObjectID());
+    if (m_Owner != LWOOBJID_EMPTY) return;
 
-    if (m_Tamer != LWOOBJID_EMPTY)
-    {
+    if (m_Tamer != LWOOBJID_EMPTY) {
         auto* tamer = EntityManager::Instance()->GetEntity(m_Tamer);
-
-        if (tamer != nullptr)
-        {
-            return;
-        }
-        
+        if (tamer != nullptr) return;
         m_Tamer = LWOOBJID_EMPTY;
     }
 
     auto* inventoryComponent = originator->GetComponent<InventoryComponent>();
 
-    if (inventoryComponent == nullptr)
-    {
-        return;
-    }
-
-    if (m_Preconditions != nullptr && !m_Preconditions->Check(originator, true)) {
-        return;
-    }
+    if (!inventoryComponent) return;
+    if (m_Preconditions != nullptr && !m_Preconditions->Check(originator, true)) return;
 
     auto* movementAIComponent = m_Parent->GetComponent<MovementAIComponent>();
 
@@ -337,8 +322,11 @@ void PetComponent::OnUse(Entity* originator)
 }
 
 void PetComponent::OnEmoteReceived(Entity* originator, const int32_t emote, Entity* target) {
+	Game::logger->Log("PetComponent::OnEmoteReceived", "Called with originator (%llu), emote (%d), target (%llu)\n", originator->GetObjectID(), emote, target->GetObjectID());
 	if (emote == 115) {
+		Game::logger->Log("PetComponent::OnEmoteReceived", "Handling Emote 115\n");
 		m_Parent->AddCallbackTimer(1.5f, [this, originator]() {
+			Game::logger->Log("PetComponent::OnEmoteReceived", "Emote 115 Calling OnUse\n");
 			OnUse(originator);
 		});
 	}
