@@ -34,6 +34,7 @@ void DamagingPets::OnPlayerLoaded(Entity *self, Entity *player) {
 }
 
 void DamagingPets::OnNotifyPetTamingMinigame(Entity *self, Entity *tamer, eNotifyType type) {
+    Game::logger->Log("Damaging::OnNotifyPetTamingMinigame", "Called with self (%llu), tamer(%llu), type (%d)\n", self->GetObjectID(), tamer->GetObjectID(), type);
     switch (type) {
         case NOTIFY_TYPE_SUCCESS:
         case NOTIFY_TYPE_BEGIN:
