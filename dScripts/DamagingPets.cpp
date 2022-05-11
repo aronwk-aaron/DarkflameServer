@@ -51,6 +51,7 @@ void DamagingPets::OnNotifyPetTamingMinigame(Entity *self, Entity *tamer, eNotif
         default:
             break;
     }
+    Game::logger->Log("Damaging::OnNotifyPetTamingMinigame", "Handled with self (%llu), tamer(%llu), type (%d)\n", self->GetObjectID(), tamer->GetObjectID(), type);
 }
 
 void DamagingPets::OnSkillEventFired(Entity *self, Entity *caster, const std::string &message) {
