@@ -331,10 +331,11 @@ void PetComponent::OnEmoteReceived(Entity* originator, const int32_t emote, Enti
 			OnUse(originator);
 		});
 	}
+    Game::logger->Log("PetComponent::OnEmoteReceived", "End\n");
 }
 
-void PetComponent::Update(float deltaTime)
-{
+void PetComponent::Update(float deltaTime) {
+	Game::logger->Log("PetComponent::Update", "Begin\n");
     if (m_StartPosition == NiPoint3::ZERO)
     {
         m_StartPosition = m_Parent->GetPosition();
@@ -514,6 +515,7 @@ void PetComponent::Update(float deltaTime)
     m_MovementAI->SetDestination(destination);
 
     m_Timer = 1;
+	Game::logger->Log("PetComponent::Update", "End\n");
 }
 
 void PetComponent::TryBuild(uint32_t numBricks, bool clientFailed) {
