@@ -326,10 +326,11 @@ void PetComponent::OnEmoteReceived(Entity* originator, const int32_t emote, Enti
 	Game::logger->Log("PetComponent::OnEmoteReceived", "Called with originator (%llu), emote (%d), target (%llu)\n", originator->GetObjectID(), emote, target->GetObjectID());
 	if (emote == 115) {
 		Game::logger->Log("PetComponent::OnEmoteReceived", "Handling Emote 115\n");
-		m_Parent->AddCallbackTimer(1.5f, [this, originator]() {
-			Game::logger->Log("PetComponent::OnEmoteReceived", "Emote 115 Calling OnUse\n");
-			OnUse(originator);
-		});
+		// m_Parent->AddCallbackTimer(1.5f, [this, originator]() {
+		// 	Game::logger->Log("PetComponent::OnEmoteReceived", "Emote 115 Calling OnUse\n");
+		// 	OnUse(originator);
+		// });
+		OnUse(originator);
 	}
     Game::logger->Log("PetComponent::OnEmoteReceived", "End\n");
 }
