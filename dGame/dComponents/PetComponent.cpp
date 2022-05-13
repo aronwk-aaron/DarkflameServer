@@ -374,7 +374,7 @@ void PetComponent::Update(float deltaTime) {
                 m_Timer = 5;
             }
         }
-
+		Game::logger->Log("PetComponent::Update", "Retuen free pet\n");
         return;
     }
 
@@ -382,8 +382,9 @@ void PetComponent::Update(float deltaTime) {
 
     if (owner == nullptr)
     {
+		Game::logger->Log("PetComponent::Update", "No Owner\n");
         m_Parent->Kill();
-
+		Game::logger->Log("PetComponent::Update", "No After kill\n");
         return;
     }
 
@@ -391,6 +392,7 @@ void PetComponent::Update(float deltaTime) {
 
     if (m_MovementAI == nullptr)
     {
+		Game::logger->Log("PetComponent::Update", "No movement AI\n");
         return;
     }
 
@@ -401,7 +403,7 @@ void PetComponent::Update(float deltaTime) {
         if (tresure == nullptr)
         {
             m_TresureTime = 0;
-
+			Game::logger->Log("PetComponent::Update", "No treasure\n");
             return;
         }
 
@@ -419,7 +421,7 @@ void PetComponent::Update(float deltaTime) {
 
             m_TresureTime = 0;
         }
-
+		Game::logger->Log("PetComponent::Update", "Treasure > 0\n");
         return;
     }
 
@@ -434,7 +436,7 @@ void PetComponent::Update(float deltaTime) {
 
         m_Timer = 1;
         m_TimerAway = 0;
-
+		Game::logger->Log("PetComponent::Update", "distnance\n");
         return;
     }
 
@@ -450,7 +452,7 @@ void PetComponent::Update(float deltaTime) {
     if (m_Timer > 0)
     {
         m_Timer -= deltaTime;
-
+		Game::logger->Log("PetComponent::Update", "timer logic\n");
         return;
     }
 
