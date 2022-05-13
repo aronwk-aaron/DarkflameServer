@@ -10,9 +10,12 @@ void AmWanderingVendor::OnStartup(Entity* self) {
 	self->SetVar(u"Set.SuspendLuaMovementAI", true);
 
 	const auto* path = dZoneManager::Instance()->GetZone()->GetPath(walkingPath);
-
-	auto* movementAIComponent = new MovementAIComponent(self, path);
-    self->AddComponent(COMPONENT_TYPE_MOVEMENT_AI, movementAIComponent);
+	std::vector<NiPoint3> pathWaypoints;
+	for (const auto& waypoint : path->pathWaypoints) {
+		pathWaypoints.push_back(waypoint.position);
+	}
+	auto* movementAIComponent = new MovementAIComponent(self, pathWaypoints);
+	self->AddComponent(COMPONENT_TYPE_MOVEMENT_AI, movementAIComponent);
 
 	self->SetProximityRadius(interactRadius, "WanderingVendor");
 }

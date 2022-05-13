@@ -17,7 +17,7 @@ MovementAIComponent::MovementAIComponent(Entity* parent, MovementAIInfo info) : 
 	m_Done = true;
 
 	m_BaseCombatAI = nullptr;
-	
+
 	m_BaseCombatAI = reinterpret_cast<BaseCombatAIComponent*>(m_Parent->GetComponent(COMPONENT_TYPE_BASE_COMBAT_AI));
 
 	//Try and fix the insane values:
@@ -47,7 +47,7 @@ void MovementAIComponent::Update(const float deltaTime) {
 		const auto source = GetCurrentWaypoint();
 
 		const auto speed = deltaTime * 2.5f;
-		
+
 		NiPoint3 velocity;
 
 		velocity.x = (m_PullPoint.x - source.x) * speed;
@@ -63,7 +63,7 @@ void MovementAIComponent::Update(const float deltaTime) {
 
 		return;
 	}
-	
+
 	if (AtFinalWaypoint()) // Are we done?
 	{
 		return;
@@ -92,7 +92,7 @@ void MovementAIComponent::Update(const float deltaTime) {
 	}
 
 	const auto source = GetCurrentWaypoint();
-	
+
 	SetPosition(source);
 
 	NiPoint3 velocity = NiPoint3::ZERO;
@@ -134,7 +134,7 @@ void MovementAIComponent::Update(const float deltaTime) {
 
 		// Calclute the time it will take to reach the next waypoint with the current speed
 		m_TotalTime = m_Timer = length / speed;
-		
+
 		SetRotation(NiQuaternion::LookAt(source, m_NextWaypoint));
 	}
 	else
@@ -154,7 +154,7 @@ void MovementAIComponent::Update(const float deltaTime) {
 			return;
 		}
 	}
-	
+
 	nextAction:
 
 	SetVelocity(velocity);
@@ -173,7 +173,7 @@ bool MovementAIComponent::AdvanceWaypointIndex()
 	{
 		return false;
 	}
-	
+
 	m_PathIndex++;
 
 	return true;
@@ -202,12 +202,12 @@ NiPoint3 MovementAIComponent::GetCurrentPosition() const
 NiPoint3 MovementAIComponent::ApproximateLocation() const
 {
 	auto source = GetCurrentPosition();
-	
+
 	if (m_Done)
 	{
 		return source;
 	}
-	
+
 	auto destination = m_NextWaypoint;
 
 	auto factor = m_TotalTime > 0 ? (m_TotalTime - m_Timer) / m_TotalTime : 0;
@@ -217,7 +217,7 @@ NiPoint3 MovementAIComponent::ApproximateLocation() const
 	auto z = source.z + factor * (destination.z - source.z);
 
 	NiPoint3 approximation = NiPoint3(x, y, z);
-	
+
 	if (dpWorld::Instance().IsLoaded())
 	{
 		approximation.y = dpWorld::Instance().GetHeightAtPoint(approximation);
@@ -226,10 +226,10 @@ NiPoint3 MovementAIComponent::ApproximateLocation() const
 	return approximation;
 }
 
-bool MovementAIComponent::Warp(const NiPoint3& point) 
+bool MovementAIComponent::Warp(const NiPoint3& point)
 {
 	Stop();
-	
+
 	NiPoint3 destination = point;
 
 	if (dpWorld::Instance().IsLoaded())
@@ -269,9 +269,9 @@ void MovementAIComponent::Stop()
 	SetPosition(ApproximateLocation());
 
 	SetVelocity(NiPoint3::ZERO);
-	
+
 	m_TotalTime = m_Timer = 0;
-	
+
 	m_Done = true;
 
 	m_CurrentPath = {};
@@ -279,19 +279,19 @@ void MovementAIComponent::Stop()
 	m_PathIndex = 0;
 
 	m_CurrentSpeed = 0;
-	
+
 	EntityManager::Instance()->SerializeEntity(m_Parent);
 }
 
 void MovementAIComponent::PullToPoint(const NiPoint3& point)
 {
 	Stop();
-	
+
 	m_Interrupted = true;
 	m_PullPoint = point;
 }
 
-void MovementAIComponent::SetPath(std::vector<NiPoint3> path) 
+void MovementAIComponent::SetPath(std::vector<NiPoint3> path)
 {
 	std::reverse(path.begin(), path.end());
 
@@ -305,16 +305,16 @@ void MovementAIComponent::SetPath(std::vector<NiPoint3> path)
 	m_Queue.pop();
 }
 
-float MovementAIComponent::GetBaseSpeed(LOT lot) 
+float MovementAIComponent::GetBaseSpeed(LOT lot)
 {
 	// Check if the lot is in the cache
 	const auto& it = m_PhysicsSpeedCache.find(lot);
-	
+
 	if (it != m_PhysicsSpeedCache.end())
 	{
 		return it->second;
 	}
-	
+
 	CDComponentsRegistryTable* componentRegistryTable = CDClientManager::Instance()->GetTable<CDComponentsRegistryTable>("ComponentsRegistry");
 	CDPhysicsComponentTable* physicsComponentTable = CDClientManager::Instance()->GetTable<CDPhysicsComponentTable>("PhysicsComponent");
 
@@ -357,7 +357,7 @@ float MovementAIComponent::GetBaseSpeed(LOT lot)
 	return speed;
 }
 
-void MovementAIComponent::SetPosition(const NiPoint3& value) 
+void MovementAIComponent::SetPosition(const NiPoint3& value)
 {
 	auto* controllablePhysicsComponent = m_Parent->GetComponent<ControllablePhysicsComponent>();
 
@@ -376,7 +376,7 @@ void MovementAIComponent::SetPosition(const NiPoint3& value)
 	}
 }
 
-void MovementAIComponent::SetRotation(const NiQuaternion& value) 
+void MovementAIComponent::SetRotation(const NiQuaternion& value)
 {
 	if (m_LockRotation)
 	{
@@ -400,7 +400,7 @@ void MovementAIComponent::SetRotation(const NiQuaternion& value)
 	}
 }
 
-void MovementAIComponent::SetVelocity(const NiPoint3& value) 
+void MovementAIComponent::SetVelocity(const NiPoint3& value)
 {
 	auto* controllablePhysicsComponent = m_Parent->GetComponent<ControllablePhysicsComponent>();
 
@@ -425,7 +425,7 @@ void MovementAIComponent::SetDestination(const NiPoint3& value)
 	{
 		return;
 	}
-	
+
 	/*if (Vector3::DistanceSquared(value, GetDestination()) < 2 * 2)
 	{
 		return;
@@ -439,7 +439,7 @@ void MovementAIComponent::SetDestination(const NiPoint3& value)
 	}
 
 	std::vector<NiPoint3> computedPath;
-	
+
 	if (dpWorld::Instance().IsLoaded())
 	{
 		computedPath = dpWorld::Instance().GetPath(GetCurrentPosition(), value, m_Info.wanderSpeed);
@@ -483,11 +483,11 @@ void MovementAIComponent::SetDestination(const NiPoint3& value)
 	}
 
 	m_CurrentPath.push_back(computedPath[computedPath.size() - 1]);
-	
+
 	m_PathIndex = 0;
-	
+
 	m_TotalTime = m_Timer = 0;
-	
+
 	m_Done = false;
 }
 
@@ -532,7 +532,7 @@ float MovementAIComponent::GetHaltDistance() const
 	return m_HaltDistance;
 }
 
-void MovementAIComponent::SetCurrentSpeed(float value) 
+void MovementAIComponent::SetCurrentSpeed(float value)
 {
 	m_CurrentSpeed = value;
 }
@@ -542,7 +542,7 @@ float MovementAIComponent::GetCurrentSpeed() const
 	return m_CurrentSpeed;
 }
 
-void MovementAIComponent::SetLockRotation(bool value) 
+void MovementAIComponent::SetLockRotation(bool value)
 {
 	m_LockRotation = value;
 }
