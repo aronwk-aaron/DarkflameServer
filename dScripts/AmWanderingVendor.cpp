@@ -1,6 +1,7 @@
 #include "AmWanderingVendor.h"
 #include "GameMessages.h"
 #include "MovementAIComponent.h"
+#include "ProximityMonitorComponent.h"
 #include "dZoneManager.h"
 #include "EntityManager.h"
 
