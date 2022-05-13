@@ -226,6 +226,7 @@
 #include "AmSkullkinTower.h"
 #include "AmDarklingDragon.h"
 #include "AmBlueX.h"
+#include "AmWanderingVendor.h"
 
 // NJ Scripts
 #include "NjGarmadonCelebration.h"
@@ -704,6 +705,8 @@ CppScripts::Script* CppScripts::GetScript(Entity* parent, const std::string& scr
 		script = new BaseEnemyApe();
 	else if (scriptName == "scripts\\02_server\\Map\\AM\\L_BLUE_X.lua")
 	    script = new AmBlueX();
+	else if (scriptName == "scripts\\02_server\\Map\\AM\\L_WANDERING_VENDOR.lua")
+	    script = new AmWanderingVendor();
 
 	// Ninjago
 	else if (scriptName == "scripts\\02_server\\Map\\njhub\\L_GARMADON_CELEBRATION_SERVER.lua")
