@@ -161,6 +161,11 @@ void EntityManager::DestroyEntity(Entity* entity) {
 
 void EntityManager::UpdateEntities(const float deltaTime) {
 	for (const auto& e : m_Entities) {
+		Game::logger->Log("EntityManager::UpdateEntities", "Updating %llu\n", e.first);
+		if (!e.second){
+			Game::logger->Log("EntityManager::UpdateEntities", "%llu WAS NULL!!!\n", e.first);
+			return;
+		}
 	    e.second->Update(deltaTime);
 	}
 
