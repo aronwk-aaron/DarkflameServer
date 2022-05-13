@@ -14,7 +14,8 @@ void AmWanderingVendor::OnStartup(Entity* self) {
 	for (const auto& waypoint : path->pathWaypoints) {
 		pathWaypoints.push_back(waypoint.position);
 	}
-	auto* movementAIComponent = new MovementAIComponent(self, pathWaypoints);
+	auto* movementAIComponent = new MovementAIComponent(self, {"wanderingVendor", 0,4,0,0,0});
+	movementAIComponent->SetPath(pathWaypoints);
 	self->AddComponent(COMPONENT_TYPE_MOVEMENT_AI, movementAIComponent);
 
 	self->SetProximityRadius(interactRadius, "WanderingVendor");
