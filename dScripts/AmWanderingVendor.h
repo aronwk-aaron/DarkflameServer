@@ -1,7 +1,6 @@
 #pragma once
 #include "CppScripts.h"
 
-
 class AmWanderingVendor : public CppScripts::Script {
 	public:
 		void OnStartup(Entity* self);

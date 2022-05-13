@@ -9,9 +9,7 @@ void AmWanderingVendor::OnStartup(Entity* self) {
 	// allows the npc to path (dont ask me why, just have to have it)
 	self->SetVar(u"Set.SuspendLuaMovementAI", true);
 
-	const auto* path = dZoneManager::Instance()->GetZone()->GetPath(
-		toSpawn.spawnPaths.at(walkingPath)
-	);
+	const auto* path = dZoneManager::Instance()->GetZone()->GetPath(walkingPath);
 
 	auto* movementAIComponent = new MovementAIComponent(self, path);
     self->AddComponent(COMPONENT_TYPE_MOVEMENT_AI, movementAIComponent);
