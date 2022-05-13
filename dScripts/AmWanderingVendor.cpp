@@ -7,7 +7,7 @@
 
 void AmWanderingVendor::OnStartup(Entity* self) {
 	// allows the npc to path (dont ask me why, just have to have it)
-	self->SetVar(u"Set.SuspendLuaMovementAI", true)
+	self->SetVar(u"Set.SuspendLuaMovementAI", true);
 
 	const auto* path = dZoneManager::Instance()->GetZone()->GetPath(
 		toSpawn.spawnPaths.at(walkingPath)
@@ -32,7 +32,7 @@ void AmWanderingVendor::OnProximityUpdate(Entity* self, Entity* entering, std::s
 		// Make sure the player still exists
 		auto* player = EntityManager::Instance()->GetEntity(entering->GetObjectID());
 		if (!player) return;
-		movementAIComponent->StopPathing();
+		movementAIComponent->Stop();
 	} else if (status == "LEAVE") {
 		auto* proximityMonitorComponent = self->GetComponent<ProximityMonitorComponent>();
 		if (!proximityMonitorComponent) return;
@@ -43,6 +43,6 @@ void AmWanderingVendor::OnProximityUpdate(Entity* self, Entity* entering, std::s
 			if (entity != nullptr && entity->IsPlayer()) m_Counter++;
 		}
 		if (m_Counter > 0) return;
-		movementAIComponent->ContinuePathing();
+		// movementAIComponent->ContinuePathing();
 	}
 }
