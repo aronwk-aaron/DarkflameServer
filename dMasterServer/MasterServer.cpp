@@ -219,7 +219,7 @@ int main(int argc, char** argv) {
 		StartChatServer();
 
 		Game::im->GetInstance(0, false, 0)->SetIsReady(true);
-		Game::im->GetInstance(1000, false, 0)->SetIsReady(true);
+		Game::im->GetInstance(1200, false, 0)->SetIsReady(true);
 
 		StartAuthServer();
 	}
@@ -754,7 +754,7 @@ void ShutdownSequence() {
 			Game::server->DeallocatePacket(packet);
 			packet = nullptr;
 		}
-		
+
 		auto done = true;
 
 		for (auto* instance : Game::im->GetInstances()) {
