@@ -336,17 +336,14 @@ int main(int argc, char** argv) {
 
 		if (zoneID != 0 && deltaTime > 0.0f) {
 			Metrics::StartMeasurement(MetricVariable::Physics);
-			Game::logger->Log("WorldServer::main", "Step World\n");
 			dpWorld::Instance().StepWorld(deltaTime);
 			Metrics::EndMeasurement(MetricVariable::Physics);
 
 			Metrics::StartMeasurement(MetricVariable::UpdateEntities);
-			Game::logger->Log("WorldServer::main", "Update Entities\n");
 			EntityManager::Instance()->UpdateEntities(deltaTime);
 			Metrics::EndMeasurement(MetricVariable::UpdateEntities);
 
 			Metrics::StartMeasurement(MetricVariable::Ghosting);
-			Game::logger->Log("WorldServer::main", "Update Chosting\n");
 			if (std::chrono::duration<float>(currentTime - ghostingLastTime).count() >= 1.0f) {
 				EntityManager::Instance()->UpdateGhosting();
 				ghostingLastTime = currentTime;
@@ -354,20 +351,19 @@ int main(int argc, char** argv) {
 			Metrics::EndMeasurement(MetricVariable::Ghosting);
 
 			Metrics::StartMeasurement(MetricVariable::UpdateSpawners);
-			Game::logger->Log("WorldServer::main", "Update Instance\n");
 			dZoneManager::Instance()->Update(deltaTime);
 			Metrics::EndMeasurement(MetricVariable::UpdateSpawners);
 		}
 
 		Metrics::StartMeasurement(MetricVariable::PacketHandling);
-		Game::logger->Log("WorldServer::main", "Handle Packets from master\n");
+
 		//Check for packets here:
 		packet = Game::server->ReceiveFromMaster();
 		if (packet) { //We can get messages not handle-able by the dServer class, so handle them if we returned anything.
 			HandlePacket(packet);
 			Game::server->DeallocateMasterPacket(packet);
 		}
-		Game::logger->Log("WorldServer::main", "Handle Packets from chat\n");
+
 		//Handle our chat packets:
 		packet = Game::chatServer->Receive();
 		if (packet) {
@@ -377,7 +373,7 @@ int main(int argc, char** argv) {
 
 		//Handle world-specific packets:
 		float timeSpent = 0.0f;
-		Game::logger->Log("WorldServer::main", "Handle Packets from worlds\n");
+
 		UserManager::Instance()->DeletePendingRemovals();
 
 		auto t1 = std::chrono::high_resolution_clock::now();
@@ -400,7 +396,7 @@ int main(int argc, char** argv) {
 		Metrics::EndMeasurement(MetricVariable::PacketHandling);
 
 		Metrics::StartMeasurement(MetricVariable::UpdateReplica);
-		Game::logger->Log("WorldServer::main", "Handle Replica\n");
+
 		//Update our replica objects:
 		Game::server->UpdateReplica();
 
