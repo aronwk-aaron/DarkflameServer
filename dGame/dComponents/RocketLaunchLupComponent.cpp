@@ -16,6 +16,8 @@ RocketLaunchLupComponent::RocketLaunchLupComponent(Entity* parent) : Component(p
 		results.nextRow();
 	}
 	results.finalize();
+
+	parent->SetVar(u"MultiZoneIDs", u"1601;1602;1603;1604;3005");
 }
 
 RocketLaunchLupComponent::~RocketLaunchLupComponent() {}
