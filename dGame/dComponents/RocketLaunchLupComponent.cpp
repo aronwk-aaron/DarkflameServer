@@ -16,8 +16,8 @@ RocketLaunchLupComponent::RocketLaunchLupComponent(Entity* parent) : Component(p
 		results.nextRow();
 	}
 	results.finalize();
-	Game::logger->Log("RocketLaunchLupComponent", "Setting custom zones");
-	parent->SetNetworkVar(u"MultiZoneIDs", m_LUPWorlds);
+	Game::logger->Log("RocketLaunchLupComponent", "Setting custom zones\n");
+	this->GetParent()->SetNetworkVar(u"MultiZoneIDs", m_LUPWorlds);
 }
 
 RocketLaunchLupComponent::~RocketLaunchLupComponent() {}
