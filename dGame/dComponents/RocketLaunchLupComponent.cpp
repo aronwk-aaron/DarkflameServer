@@ -17,7 +17,7 @@ RocketLaunchLupComponent::RocketLaunchLupComponent(Entity* parent) : Component(p
 	}
 	results.finalize();
 
-	parent->SetNetworkVar(u"MultiZoneIDs", u"1601;1602;1603;1604;3005", m_Parent->GetSystemAddress());
+	parent->SetNetworkVar(u"MultiZoneIDs", m_LUPWorlds);
 }
 
 RocketLaunchLupComponent::~RocketLaunchLupComponent() {}
