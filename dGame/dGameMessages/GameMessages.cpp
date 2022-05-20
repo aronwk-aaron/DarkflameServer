@@ -2490,7 +2490,8 @@ void GameMessages::HandleBBBSaveRequest(RakNet::BitStream* inStream, Entity* ent
 	}
 
 	std::string lxfml(reinterpret_cast<char*>(outData), size); //std::string version of the decompressed data!
-
+	// WILL SMASH THE STACK
+	// Game::logger->Log("GameMessages", "got lxfml %s!\n", lxfml.c_str());
 	// bodge to split one lxfml into multiple based on rigid systems and group systems
 	tinyxml2::XMLDocument* origModel = new tinyxml2::XMLDocument();
 	if (!origModel) return;
@@ -2503,9 +2504,52 @@ void GameMessages::HandleBBBSaveRequest(RakNet::BitStream* inStream, Entity* ent
 		Game::logger->Log("GameMessages", "Failed to load xmlData!\n");
 		return;
 	}
-	std::vector<tinyxml2::XMLElement*> rigidSystems;
-	std::vector<tinyxml2::XMLElement*> groups;
 
+	std::vector<std::vector<std::string>> rigid_parts;
+	std::vector<tinyxml2::XMLElement*> unused_rigidsys;
+
+	for(auto* e = origModel->FirstChildElement("LXFML")->FirstChildElement("RigidSystems")->FirstChildElement("RigidSystem"); e != NULL; e = e->NextSiblingElement("RigidSystem")){
+		unused_rigidsys.push_back(e);
+		std::vector<std::string> this_rigidsys;
+		for(auto* e = origModel->FirstChildElement("Rigid"); e != NULL; e = e->NextSiblingElement("Rigid")){
+			const std::string boneRefs = e->Attribute("boneRefs");
+			std::vector<std::string> splited = GeneralUtils::SplitString(boneRefs, ",");
+			for(std::string bone : splited) {
+				Game::logger->Log("GameMessages", "group %s\n", bone.c_str());
+				this_rigidsys.push_back(bone);
+			}
+		}
+		rigid_parts.push_back(this_rigidsys);
+	}
+
+	std::vector<std::vector<std::string>> group_parts;
+	std::vector<tinyxml2::XMLElement*> unused_groups;
+	for(auto* e = origModel->FirstChildElement("LXFML")->FirstChildElement("GroupSystems")->FirstChildElement("GroupSystem")->FirstChildElement("Group"); e != NULL; e = e->NextSiblingElement("Group")){
+		Game::logger->Log("GameMessages", "FOUND GROUP!\n");
+		unused_groups.push_back(e);
+		const std::string partRefs = e->Attribute("partRefs");
+		std::vector<std::string> splited = GeneralUtils::SplitString(partRefs, ",");
+		group_parts.push_back(splited);
+		Game::logger->Log("GameMessages", "added list to groups list\n");
+	}
+
+	Game::logger->Log("GameMessages", "GROUPS %i\n", group_parts.size());
+	for (int i = 0; i < group_parts.size(); i++)
+	{
+		for (int j = 0; j < group_parts[i].size(); j++)
+		{
+			Game::logger->Log("GameMessages", "group %s\n", group_parts[i][j].c_str());
+		}
+	}
+
+	Game::logger->Log("GameMessages", "RIDIGS %i\n", group_parts.size());
+	for (int i = 0; i < rigid_parts.size(); i++)
+	{
+		for (int j = 0; j < rigid_parts[i].size(); j++)
+		{
+			Game::logger->Log("GameMessages", "rigidsys %s\n", rigid_parts[i][j].c_str());
+		}
+	}
 
 
 	//Now, the cave of dragons:
