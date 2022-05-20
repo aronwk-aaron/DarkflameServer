@@ -2503,16 +2503,10 @@ void GameMessages::HandleBBBSaveRequest(RakNet::BitStream* inStream, Entity* ent
 		Game::logger->Log("GameMessages", "Failed to load xmlData!\n");
 		return;
 	}
-	tinyxml2::XMLElement* rigidSystems = origModel->FirstChildElement("RigidSystems");
-	tinyxml2::XMLElement* groupSystems = origModel->FirstChildElement("GroupSystems");
+	std::vector<tinyxml2::XMLElement*> rigidSystems;
+	std::vector<tinyxml2::XMLElement*> groups;
 
-	int groups = 0;
-	int rigids = 0;
-	tinyxml2::XMLElement* child;
-	for(child = groupSystems->FirstChildElement("GroupSystem"); child; child = child->NextSiblingElement("GroupSystem") ) groups++;
-	for(child = rigidSystems->FirstChildElement("RigidSystem"); child; child = child->NextSiblingElement("RigidSystem") ) rigids++;
 
-	Game::logger->Log("GameMessages", "Fround %i rigids and %i groups!\n", groups, rigids);
 
 	//Now, the cave of dragons:
 
